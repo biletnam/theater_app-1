@@ -16,9 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // get users
         $users = User::paginate(15);
-        // return the collection of users
         return UserResource::collection($users);
     }
 
@@ -40,7 +38,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->isMethod('put') ? User::findOrFail($request->id) : new User;
+        $user->id = $request->input('id');
+        $user->name = $request->input('name');
+        $user->lastname = $request->input('lastname');
+
+        if ($user->save()) {
+            return new UserResource($user);
+        }
     }
 
     /**
@@ -51,7 +56,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     /**
@@ -85,6 +91,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($user->delete()) {
+            return new UserResource($user);
+        }
     }
 }
