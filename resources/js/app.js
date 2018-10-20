@@ -16,6 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('navigator', require('./components/Navigator.vue'));
+Vue.component('reservations', require('./components/Reservations.vue'));
 Vue.component('users', require('./components/Users.vue'));
 
 const app = new Vue({
