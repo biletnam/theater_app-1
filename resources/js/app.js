@@ -9,6 +9,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+axios.defaults.baseURL = 'api/';
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -18,6 +20,7 @@ window.Vue = require('vue');
 Vue.component('navigator', require('./components/Navigator.vue'));
 Vue.component('reservations', require('./components/Reservations.vue'));
 Vue.component('users', require('./components/Users.vue'));
+Vue.component('user-form', require('./components/UserForm.vue'));
 
 const app = new Vue({
     el: '#app',
