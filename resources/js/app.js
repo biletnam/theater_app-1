@@ -19,8 +19,10 @@ axios.defaults.baseURL = 'api/';
 
 Vue.component('navigator', require('./components/Navigator.vue'));
 Vue.component('reservations', require('./components/Reservations.vue'));
-Vue.component('users', require('./components/Users.vue'));
-Vue.component('user-form', require('./components/UserForm.vue'));
+
+Vue.component('users', require('./components/users/Users.vue'));
+Vue.component('user-form', require('./components/users/UserForm.vue'));
+Vue.component('user-list', require('./components/users/UserList.vue'));
 
 const app = new Vue({
     el: '#app',
