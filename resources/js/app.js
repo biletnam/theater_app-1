@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -18,12 +17,15 @@ axios.defaults.baseURL = 'api/';
  */
 
 Vue.component('navigator', require('./components/Navigator.vue'));
-Vue.component('reservations', require('./components/Reservations.vue'));
+Vue.component('reservations', require('./components/reservations/Reservations.vue'));
 
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('user-form', require('./components/users/UserForm.vue'));
 Vue.component('user-list', require('./components/users/UserList.vue'));
 
+import router from './routes'
+
 const app = new Vue({
     el: '#app',
+    router,
 });

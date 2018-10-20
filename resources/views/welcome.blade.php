@@ -22,7 +22,7 @@
         <div id="app">
             <navigator></navigator>
             <div class="container">
-                <users></users>
+                <router-view></router-view>
             </div>
         </div>
         <script 
