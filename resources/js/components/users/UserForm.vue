@@ -6,6 +6,7 @@
         v-model="user.name"
         class="form-control" 
         id="name"
+        ref="input_name"
         placeholder="Nombre(s) del usuario">
     </div>
     <div class="form-group">
@@ -18,6 +19,11 @@
     </div>
     
     <div class="text-right">
+      <button type="button"
+        class="btn btn-secondary"
+        @click="cancelForm">
+        Cancelar
+      </button>
       <button type="submit" class="btn btn-primary">
         Guardar
       </button>
@@ -31,7 +37,13 @@
       user: Object,
       isEditing: Boolean
     },
+    created () {
+      this.$nextTick(() => this.$refs.input_name.focus())
+    },
     methods: {
+      cancelForm () {
+        this.$emit('cancelled')
+      },
       saveUser () {
         if (this.isEditing === false) {
           // add new user
