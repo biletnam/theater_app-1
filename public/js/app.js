@@ -51838,7 +51838,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  border: solid 1px #333;\n  width: 100%;\n}\n.seat-list .seat-item[data-v-2e995073] {\n  float: left;\n  width: 10%;\n  max-width: 10%;\n  padding: 1px;\n  border: solid 1px #c9c9c9;\n}\n.seat-list .seat-item *[data-v-2e995073] {\n  font-size: 9px;\n}\n.seat-list .seat-item .seat[data-v-2e995073] {\n  border: dotted 3px orange;\n  padding: 12px;\n  margin: 6px;\n}\n", ""]);
+exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  width: 100%;\n}\n.seat-list .seat-item[data-v-2e995073] {\n  float: left;\n  width: 10%;\n  max-width: 10%;\n  padding: 1px;\n}\n.seat-list .seat-item *[data-v-2e995073] {\n  font-size: 9px;\n}\n.seat-list .seat-item .seat[data-v-2e995073] {\n  border-radius: 6px;\n  border: solid 3px #c9c9c9;\n  padding: 12px 6px;\n  margin: 3px;\n}\n.seat-list .seat-item .seat[data-v-2e995073]:hover,\n.seat-list .seat-item .seat.reserved[data-v-2e995073] { \n  border-color: orange !important;\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -51877,11 +51877,23 @@ var render = function() {
       { staticClass: "seat-list clearfix" },
       _vm._l(_vm.seats, function(seat) {
         return _c("div", { staticClass: "seat-item" }, [
-          _c("div", { staticClass: "seat text-center" }, [
-            _c("small", [
-              _vm._v("f " + _vm._s(seat.row) + " - c " + _vm._s(seat.column))
-            ])
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "seat text-center",
+              class: _vm.calculateClass(seat.row, seat.column),
+              on: {
+                click: function($event) {
+                  _vm.reserve(seat.row, seat.column)
+                }
+              }
+            },
+            [
+              _c("small", [
+                _vm._v("f:" + _vm._s(seat.row) + " - c:" + _vm._s(seat.column))
+              ])
+            ]
+          )
         ])
       })
     )
@@ -51927,11 +51939,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      seats: []
+      seats: [],
+      reservedSeats: []
     };
   },
   created: function created() {
@@ -51949,6 +51964,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }
       console.log('this.seats', this.seats);
+    },
+    calculateClass: function calculateClass(row, column) {
+      return this.isReserved(row, column) ? 'reserved' : '';
+    },
+    isReserved: function isReserved(row, column) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.reservedSeats[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var seat = _step.value;
+
+          if (seat.row == row && seat.column == column) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return false;
+    },
+    reserve: function reserve(row, column) {
+      console.log('column', column);
+      console.log('row', row);
+
+      if (!this.isReserved(row, column)) {
+        // add reserved seat
+        this.reservedSeats.push({
+          row: row,
+          column: column
+        });
+      } else {
+        // free reserved seat
+        var position = this.reservedSeats.findIndex(function (seat) {
+          return seat.row == row && seat.column == column;
+        });
+        this.reservedSeats.splice(position);
+        console.log('position', position);
+      }
     }
   }
 });

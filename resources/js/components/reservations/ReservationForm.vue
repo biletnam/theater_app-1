@@ -14,8 +14,10 @@
     <div class="seat-list clearfix">
       <div v-for="seat in seats"
         class="seat-item">
-        <div class="seat text-center">
-          <small>f {{ seat.row }} - c {{ seat.column }}</small>
+        <div @click="reserve(seat.row, seat.column)"
+          class="seat text-center"
+          :class="calculateClass(seat.row, seat.column)">
+          <small>f:{{ seat.row }} - c:{{ seat.column }}</small>
         </div>
       </div>
     </div>
@@ -26,7 +28,8 @@
   export default {
     data () {
       return {
-        seats: []
+        seats: [],
+        reservedSeats: []
       }
     },
     created () {
@@ -43,6 +46,36 @@
           }
         }
         console.log('this.seats', this.seats);
+      },
+      calculateClass(row, column) {
+        return this.isReserved(row, column) ? 'reserved' : '';
+      },
+      isReserved(row, column) {
+        for (let seat of this.reservedSeats) {
+          if (seat.row == row && seat.column == column) {
+            return true;
+          }
+        }
+        return false;
+      },
+      reserve (row, column) {
+        console.log('column', column);
+        console.log('row', row);
+
+        if (!this.isReserved(row, column)) {
+          // add reserved seat
+          this.reservedSeats.push({
+            row: row,
+            column: column
+          });
+        } else {
+          // free reserved seat
+          var position = this.reservedSeats.findIndex(function(seat) {
+            return (seat.row == row && seat.column == column);
+          });
+          this.reservedSeats.splice(position);
+          console.log('position', position);
+        }
       }
     }
   }
@@ -50,7 +83,6 @@
 
 <style scoped>
   .seat-list {
-    border: solid 1px #333;
     width: 100%;
   }
   .seat-list .seat-item {
@@ -58,7 +90,6 @@
     width: 10%;
     max-width: 10%;
     padding: 1px;
-    border: solid 1px #c9c9c9;
   }
 
   .seat-list .seat-item * {
@@ -66,8 +97,16 @@
   }
 
   .seat-list .seat-item .seat {
-    border: dotted 3px orange;
-    padding: 12px;
-    margin: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border: solid 3px #c9c9c9;
+    padding: 12px 6px;
+    margin: 3px;
+  }
+  .seat-list .seat-item .seat:hover,
+  .seat-list .seat-item .seat.reserved { 
+    border-color: orange !important;
+    cursor: pointer;
   }
 </style>
