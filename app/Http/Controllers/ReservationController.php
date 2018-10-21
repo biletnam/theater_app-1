@@ -28,7 +28,9 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        $reservation = $request->isMethod('put') ? Reservation::findOrFail($request->id) : new Reservation;
+        $reservation = $request->isMethod('put') ? 
+            Reservation::findOrFail($request->id) : 
+            new Reservation;
         $reservation->id = $request->input('id');
         if ($request->isMethod('post')) {
             $reservation->reservation_date = date("Y-m-d H:i:s");

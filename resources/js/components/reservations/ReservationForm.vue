@@ -4,30 +4,64 @@
       Nueva reserva
     </h3>
 
-    <div class="mb-3">
-      <button type="button" @click="$router.go(-1)"
-        class="btn btn-info">
-        Volver
-      </button>
+    <div class="form-group mb-3">
+      <div>
+        <label>
+          Fecha de reservación
+        </label>
+      </div>
+      <datepicker :value="reservationDate"
+        input-class="form-control"></datepicker> 
     </div>
 
-    <div class="seat-list clearfix">
-      <div v-for="seat in seats"
-        class="seat-item">
-        <div @click="reserve(seat.row, seat.column)"
-          class="seat text-center"
-          :class="calculateClass(seat.row, seat.column)">
-          <small>f:{{ seat.row }} - c:{{ seat.column }}</small>
+    <div class="form-group">
+      <div class="text-center mb-3 mt-1">
+        <small><i>Selecciona una o varias butacas</i></small>
+      </div>
+      <div class="seat-list clearfix">
+        <div v-for="seat in seats"
+          class="seat-item">
+          <div @click="reserve(seat.row, seat.column)"
+            class="seat text-center"
+            :class="calculateClass(seat.row, seat.column)">
+            <small><b>F</b> {{ seat.row }} - <b>C</b> {{ seat.column }}</small>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="text-right p-1 clearfix">
+      <div class="float-left">
+        <button type="button" @click="goBack"
+          class="btn btn-info pull-left">
+          Listado de reservas
+        </button>
+      </div>
+
+      <div class="float-right">
+        <button type="button"
+          class="btn btn-secondary pull-right"
+          @click="cancelReservation">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          Guardar
+        </button>
       </div>
     </div>
   </form>
 </template>
 
 <script>
+  import datepicker from 'vuejs-datepicker';
+
   export default {
+    components: {
+      datepicker
+    },
     data () {
       return {
+        reservationDate: new Date(),
         seats: [],
         reservedSeats: []
       }
@@ -36,6 +70,11 @@
       this.drawSeats();
     },
     methods: {
+      goBack () {
+        window.history.length > 1
+          ? this.$router.go(-1)
+          : this.$router.push('/');
+      },
       drawSeats() {
         for (var row = 1; row <= 5; row ++) {
           for (var column = 1; column <= 10; column ++) {
@@ -73,9 +112,19 @@
           var position = this.reservedSeats.findIndex(function(seat) {
             return (seat.row == row && seat.column == column);
           });
-          this.reservedSeats.splice(position);
-          console.log('position', position);
+          this.reservedSeats.splice(position, 1);
         }
+      },
+      cancelReservation () {
+        if (this.reservedSeats.length < 1) {
+          alert('No se han seleccionado butacas');
+          return;
+        }
+        if (!confirm('¿Está seguro que desea cancelar la reserva?')) {
+          return;
+        }
+        this.reservationDate = new Date();
+        this.reservedSeats = [];
       }
     }
   }
