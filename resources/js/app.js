@@ -17,11 +17,14 @@ axios.defaults.baseURL = 'api/';
  */
 
 Vue.component('navigator', require('./components/Navigator.vue'));
+
 Vue.component('reservations', require('./components/reservations/Reservations.vue'));
+Vue.component('reservation-list', require('./components/reservations/ReservationList.vue'))
 
 Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('user-form', require('./components/users/UserForm.vue'));
 Vue.component('user-list', require('./components/users/UserList.vue'));
+
 
 import router from './routes'
 

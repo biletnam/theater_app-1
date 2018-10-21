@@ -1,26 +1,12 @@
 <template>
-  <div class="user-list">
-    <div v-for="user in users"
-      :key="user.id"
+  <div class="reservation-list">
+    <div v-if="reservations"
+      v-for="reservation in reservations"
+      :key="reservation.id"
       class="card mb-3">
-      <div class="card-body">
-        <label>{{ user.lastname }} , {{ user.name }}</label>
-      </div>
-      <div class="card-footer text-right">
-        <a href="javascript:void(0)"
-          @click="removeUser(user.id)" 
-          class="btn btn-danger">
-          Borrar
-        </a>
-        <a href="javascript:void(0)"
-          @click="editUser(user)" 
-          class="btn btn-info">
-          Editar
-        </a>
-      </div>
+      
     </div>
-    <!-- paginator -->
-    <nav class="mt-3">
+    <nav v-if="pagination" class="mt-3">
       <ul class="pagination justify-center">
         <li class="page-item"
           :class="[{disabled: !pagination.prev_page_url}]">
@@ -49,7 +35,7 @@
 <script>
   export default {
     props: {
-      users: Array,
+      reservations: Array,
       pagination: Object
     },
     methods: {
@@ -68,3 +54,4 @@
     }
   }
 </script>
+

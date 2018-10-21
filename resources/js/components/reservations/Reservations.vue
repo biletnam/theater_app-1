@@ -1,25 +1,29 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">
-                        Reservas
-                    </div>
+  <div>
+    <h3 class="p-3 text-center">
+      Sistema de Reservas
+    </h3>
+    
+    <reservation-list 
+      :reservations="reservations"
+      :pagination="pagination"></reservation-list>
 
-                    <div class="card-body">
-                        Lista de reservas
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </template>
 
-<script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+<script> 
+  export default {
+    data () {
+      return {
+        reservations: [],
+        pagination: null
+      }
     }
+  }
 </script>
+
+<style>
+.justify-center {
+  justify-content: center;
+}
+</style>
