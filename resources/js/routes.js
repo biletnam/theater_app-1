@@ -7,7 +7,6 @@ import Users from './components/users/Users'
 Vue.use(VueRouter);
 
 export default new VueRouter({
-    mode: 'history',
     routes: [
       {
         path: '/',

@@ -39,3 +39,7 @@ Route::put('reservation', 'ReservationController@store');
 // delete reservation
 Route::put('reservation/{id}', 'ReservationController@destroy');
 
+Route::get('/{vue_capture?}', function () {
+    return view('welcome');
+})->where('vue_capture', '[\/\w\.-]*');
+
