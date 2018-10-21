@@ -3,6 +3,13 @@
     <h3 class="p-3 text-center">
       Sistema de Reservas
     </h3>
+
+    <div class="mb-3">
+      <router-link :to="{ name: 'new_reservation' }"
+        class="btn btn-success">
+        Nueva reserva
+      </router-link>
+    </div>
     
     <reservation-list 
       :reservations="reservations"

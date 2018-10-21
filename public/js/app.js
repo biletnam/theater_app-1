@@ -25398,10 +25398,11 @@ Vue.component('navigator', __webpack_require__(44));
 
 Vue.component('reservations', __webpack_require__(15));
 Vue.component('reservation-list', __webpack_require__(53));
+Vue.component('reservation-form', __webpack_require__(74));
 
 Vue.component('users', __webpack_require__(16));
-Vue.component('user-form', __webpack_require__(62));
 Vue.component('user-list', __webpack_require__(65));
+Vue.component('user-form', __webpack_require__(62));
 
 
 
@@ -47970,6 +47971,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -48019,6 +48027,22 @@ var render = function() {
       _c("h3", { staticClass: "p-3 text-center" }, [
         _vm._v("\n    Sistema de Reservas\n  ")
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "mb-3" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "btn btn-success",
+              attrs: { to: { name: "new_reservation" } }
+            },
+            [_vm._v("\n      Nueva reserva\n    ")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("reservation-list", {
         attrs: { reservations: _vm.reservations, pagination: _vm.pagination },
@@ -49056,8 +49080,11 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_reservations_Reservations__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_reservations_Reservations___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_reservations_Reservations__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_Users__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_Users___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_users_Users__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_users_Users__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_users_Users___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_users_Users__);
+
 
 
 
@@ -49072,9 +49099,17 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
     name: 'reservations',
     component: __WEBPACK_IMPORTED_MODULE_2__components_reservations_Reservations___default.a
   }, {
+    path: '/new-reservation',
+    name: 'new_reservation',
+    component: __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm___default.a
+  }, {
+    path: '/reservation/{id}',
+    name: 'reservation',
+    component: __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm___default.a
+  }, {
     path: '/users',
     name: 'users',
-    component: __WEBPACK_IMPORTED_MODULE_3__components_users_Users___default.a
+    component: __WEBPACK_IMPORTED_MODULE_4__components_users_Users___default.a
   }]
 }));
 
@@ -51713,6 +51748,210 @@ if (inBrowser && window.Vue) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(75)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(78)
+/* template */
+var __vue_template__ = __webpack_require__(77)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-2e995073"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/reservations/ReservationForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2e995073", Component.options)
+  } else {
+    hotAPI.reload("data-v-2e995073", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(76);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("ba7956d4", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2e995073\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReservationForm.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2e995073\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReservationForm.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  border: solid 1px #333;\n  width: 100%;\n}\n.seat-list .seat-item[data-v-2e995073] {\n  float: left;\n  width: 10%;\n  max-width: 10%;\n  padding: 1px;\n  border: solid 1px #c9c9c9;\n}\n.seat-list .seat-item *[data-v-2e995073] {\n  font-size: 9px;\n}\n.seat-list .seat-item .seat[data-v-2e995073] {\n  border: dotted 3px orange;\n  padding: 12px;\n  margin: 6px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("form", [
+    _c("h3", { staticClass: "p-3 text-center" }, [
+      _vm._v("\n    Nueva reserva\n  ")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info",
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              _vm.$router.go(-1)
+            }
+          }
+        },
+        [_vm._v("\n      Volver\n    ")]
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "seat-list clearfix" },
+      _vm._l(_vm.seats, function(seat) {
+        return _c("div", { staticClass: "seat-item" }, [
+          _c("div", { staticClass: "seat text-center" }, [
+            _c("small", [
+              _vm._v("f " + _vm._s(seat.row) + " - c " + _vm._s(seat.column))
+            ])
+          ])
+        ])
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2e995073", module.exports)
+  }
+}
+
+/***/ }),
+/* 78 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      seats: []
+    };
+  },
+  created: function created() {
+    this.drawSeats();
+  },
+
+  methods: {
+    drawSeats: function drawSeats() {
+      for (var row = 1; row <= 5; row++) {
+        for (var column = 1; column <= 10; column++) {
+          this.seats.push({
+            row: row,
+            column: column
+          });
+        }
+      }
+      console.log('this.seats', this.seats);
+    }
+  }
+});
 
 /***/ })
 /******/ ]);

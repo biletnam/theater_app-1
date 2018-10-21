@@ -20,10 +20,11 @@ Vue.component('navigator', require('./components/Navigator.vue'));
 
 Vue.component('reservations', require('./components/reservations/Reservations.vue'));
 Vue.component('reservation-list', require('./components/reservations/ReservationList.vue'))
+Vue.component('reservation-form', require('./components/reservations/ReservationForm.vue'))
 
 Vue.component('users', require('./components/users/Users.vue'));
-Vue.component('user-form', require('./components/users/UserForm.vue'));
 Vue.component('user-list', require('./components/users/UserList.vue'));
+Vue.component('user-form', require('./components/users/UserForm.vue'));
 
 
 import router from './routes'
