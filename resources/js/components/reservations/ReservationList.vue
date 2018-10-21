@@ -1,11 +1,28 @@
 <template>
   <div class="reservation-list">
-    <div v-if="reservations"
-      v-for="reservation in reservations"
+    <div v-for="reservation in reservations"
       :key="reservation.id"
       class="card mb-3">
-      
+      <div class="card-body">
+        <h4>{{ reservation.reservation_date }}</h4>
+        <small>
+          Cantidad de personas: <b>{{ reservation.people_number  }}</b>
+        </small>
+      </div>
+      <div class="card-footer text-right">
+        <a href="javascript:void(0)"
+          @click="removeReservation(reservation.id)" 
+          class="btn btn-danger">
+          Borrar
+        </a>
+        <a href="javascript:void(0)"
+          @click="editReservation(reservation)" 
+          class="btn btn-info">
+          Editar
+        </a>
+      </div>
     </div>
+    <!-- paginator -->
     <nav v-if="pagination" class="mt-3">
       <ul class="pagination justify-center">
         <li class="page-item"
@@ -45,13 +62,18 @@
       nextPage (url) {
         this.$emit('next', url)
       },
-      editUser(user) {
+      editReservation(user) {
         this.$emit('edited', user);
       },
-      removeUser(id) {
+      removeReservation(id) {
         this.$emit('removed', id);
       }
     }
   }
 </script>
 
+<style>
+.justify-center {
+  justify-content: center;
+}
+</style>

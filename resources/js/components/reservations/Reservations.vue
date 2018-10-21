@@ -6,8 +6,9 @@
     
     <reservation-list 
       :reservations="reservations"
-      :pagination="pagination"></reservation-list>
-
+      :pagination="pagination"
+      @prev="fetchReservations"
+      @next="fetchReservations"></reservation-list>
   </div>
 </template>
 
@@ -16,7 +17,31 @@
     data () {
       return {
         reservations: [],
-        pagination: null
+        pagination: {}
+      }
+    },
+    created() {
+      this.fetchReservations();
+    },
+    methods: {
+      fetchReservations (pageUrl) {
+        pageUrl = pageUrl || 'reservations'
+        axios.get(pageUrl)
+        .then(response => {
+          console.log('response', response);
+          let meta = response.data.meta;
+          let links = response.data.links;
+          this.reservations = response.data.data;
+          this.pagination = {
+            current_page: meta.current_page,
+            last_page: meta.last_page,
+            next_page_url: links.next,
+            prev_page_url: links.prev
+          }
+        })
+        .catch(error => {
+          console.error('error', error);
+        })
       }
     }
   }

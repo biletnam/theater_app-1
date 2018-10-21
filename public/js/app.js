@@ -47969,13 +47969,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       reservations: [],
-      pagination: null
+      pagination: {}
     };
+  },
+  created: function created() {
+    this.fetchReservations();
+  },
+
+  methods: {
+    fetchReservations: function fetchReservations(pageUrl) {
+      var _this = this;
+
+      pageUrl = pageUrl || 'reservations';
+      axios.get(pageUrl).then(function (response) {
+        console.log('response', response);
+        var meta = response.data.meta;
+        var links = response.data.links;
+        _this.reservations = response.data.data;
+        _this.pagination = {
+          current_page: meta.current_page,
+          last_page: meta.last_page,
+          next_page_url: links.next,
+          prev_page_url: links.prev
+        };
+      }).catch(function (error) {
+        console.error('error', error);
+      });
+    }
   }
 });
 
@@ -47995,7 +48021,8 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("reservation-list", {
-        attrs: { reservations: _vm.reservations, pagination: _vm.pagination }
+        attrs: { reservations: _vm.reservations, pagination: _vm.pagination },
+        on: { prev: _vm.fetchReservations, next: _vm.fetchReservations }
       })
     ],
     1
@@ -48016,6 +48043,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(72)
+}
 var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(54)
@@ -48024,7 +48055,7 @@ var __vue_template__ = __webpack_require__(55)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -48098,6 +48129,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -48111,10 +48159,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     nextPage: function nextPage(url) {
       this.$emit('next', url);
     },
-    editUser: function editUser(user) {
+    editReservation: function editReservation(user) {
       this.$emit('edited', user);
     },
-    removeUser: function removeUser(id) {
+    removeReservation: function removeReservation(id) {
       this.$emit('removed', id);
     }
   }
@@ -48133,9 +48181,46 @@ var render = function() {
     { staticClass: "reservation-list" },
     [
       _vm._l(_vm.reservations, function(reservation) {
-        return _vm.reservations
-          ? _c("div", { key: reservation.id, staticClass: "card mb-3" })
-          : _vm._e()
+        return _c("div", { key: reservation.id, staticClass: "card mb-3" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("h4", [_vm._v(_vm._s(reservation.reservation_date))]),
+            _vm._v(" "),
+            _c("small", [
+              _vm._v("\n        Cantidad de personas: "),
+              _c("b", [_vm._v(_vm._s(reservation.people_number))])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer text-right" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { href: "javascript:void(0)" },
+                on: {
+                  click: function($event) {
+                    _vm.removeReservation(reservation.id)
+                  }
+                }
+              },
+              [_vm._v("\n        Borrar\n      ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-info",
+                attrs: { href: "javascript:void(0)" },
+                on: {
+                  click: function($event) {
+                    _vm.editReservation(reservation)
+                  }
+                }
+              },
+              [_vm._v("\n        Editar\n      ")]
+            )
+          ])
+        ])
       }),
       _vm._v(" "),
       _vm.pagination
@@ -48329,6 +48414,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       pageUrl = pageUrl || 'users';
       axios.get(pageUrl).then(function (response) {
+        console.log('response', response);
         var meta = response.data.meta;
         var links = response.data.links;
         _this.users = response.data.data;
@@ -51588,6 +51674,49 @@ if (inBrowser && window.Vue) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(73);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("4d40eb86", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6292774d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReservationList.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6292774d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReservationList.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.justify-center {\r\n  -webkit-box-pack: center;\r\n      -ms-flex-pack: center;\r\n          justify-content: center;\n}\r\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);
