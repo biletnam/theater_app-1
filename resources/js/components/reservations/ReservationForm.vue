@@ -136,11 +136,17 @@
             console.error('response', error);
           });
         } else {
-          axios.post('reFservation', JSON.stringify(this.reservation), {
+          axios.post('reservation', JSON.stringify(this.reservation), {
             headers: {
               'Content-Type': 'application/json'
             }
           }).then((response) => {
+            var response = response.data;
+            if (response.conflicts) {
+              alert(response.message);
+              var message = response.message;
+              return;
+            } 
             alert('La reserva se ha creado exitosamente');
             this.$router.push('/');
           }).catch((error) => {

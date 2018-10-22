@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 use App\Http\Requests;
+use App\User;
 use App\Reservation;
 use App\ReservedSeat;
 use App\Http\Resources\Reservation as ReservationResource;
 use Carbon\Carbon;
+use Storage;
 
 class ReservationController extends Controller
 {
+    var $reservations_log;
+
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +47,9 @@ class ReservationController extends Controller
         $reservation->user_id = $request->input('user_id');
         $reservation->people_number = $request->input('people_number');
         $reserved_seats = $request->input('reserved_seats');
-        
+        $user = User::findOrFail($reservation->user_id);
+                
+        // check for conflicts
         $conflicted_seats = $this->conflicted_seats($reserved_seats, $reservation);
         if (!empty($conflicted_seats)) {
             return response()->json([
@@ -49,7 +57,8 @@ class ReservationController extends Controller
                 'message' => $this->conflicted_seats_message($conflicted_seats)
             ]);
         }
-
+        
+        // if no conflicts, we proceed to reserve
         if ($reservation->save()) {
             // if exists remove all reservedSeat 
             if ($request->isMethod('put')) {
@@ -63,9 +72,53 @@ class ReservationController extends Controller
                 $reserved_seat->column = $seat['column'];
                 $reservation->reserved_seats()->save($reserved_seat);
             }
+            // log reservation
+            $log_action = $request->isMethod('post') ? 'creado' : 'modificado';
+            $this->logger()->info('El usuario ' . 
+                $user->name . ' ha ' . 
+                $log_action . ' la reserva nº ' . 
+                $reservation->id);
         }
 
         return new ReservationResource($reservation);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        return new ReservationResource($reservation);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        if ($reservation->delete()) {
+            return new ReservationResource($reservation);
+        }
+    }
+
+    /**
+     * Private members
+     */
+    private function logger() {
+        if ($this->reservations_log == null) {
+            $this->reservations_log = new Logger('reservations');
+            $this->reservations_log->pushHandler(new StreamHandler(storage_path().'/logs/reservations.txt'));
+        }
+        return $this->reservations_log;
     }
 
     private function conflicted_seats_message($conflicted_seats) {
@@ -97,32 +150,5 @@ class ReservationController extends Controller
         }
 
         return $conflicted_seats;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $reservation = Reservation::findOrFail($id);
-        return new ReservationResource($reservation);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $reservation = Reservation::findOrFail($id);
-
-        if ($reservation->delete()) {
-            return new ReservationResource($reservation);
-        }
     }
 }

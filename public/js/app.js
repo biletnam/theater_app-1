@@ -48632,11 +48632,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           console.error('response', error);
         });
       } else {
-        axios.post('reFservation', JSON.stringify(this.reservation), {
+        axios.post('reservation', JSON.stringify(this.reservation), {
           headers: {
             'Content-Type': 'application/json'
           }
         }).then(function (response) {
+          var response = response.data;
+          if (response.conflicts) {
+            alert(response.message);
+            var message = response.message;
+            return;
+          }
           alert('La reserva se ha creado exitosamente');
           _this2.$router.push('/');
         }).catch(function (error) {
