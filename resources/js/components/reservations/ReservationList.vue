@@ -4,8 +4,8 @@
       :key="reservation.id"
       class="card mb-3">
       <div class="card-body">
-        <h4>{{ reservation.user_complete_name }}</h4>
-        <h5>{{ reservation.formatted_reservation_date }}</h5>
+        <h4>Reservación para el {{ reservation.formatted_reservation_date }}</h4>
+        <h5>{{ reservation.user_complete_name }}</h5>
         <small>
           Cantidad de personas: <b>{{ reservation.people_number  }}</b>
         </small>

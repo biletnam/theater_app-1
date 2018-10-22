@@ -48323,9 +48323,14 @@ var render = function() {
       _vm._l(_vm.reservations, function(reservation) {
         return _c("div", { key: reservation.id, staticClass: "card mb-3" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("h4", [_vm._v(_vm._s(reservation.user_complete_name))]),
+            _c("h4", [
+              _vm._v(
+                "Reservación para el " +
+                  _vm._s(reservation.formatted_reservation_date)
+              )
+            ]),
             _vm._v(" "),
-            _c("h5", [_vm._v(_vm._s(reservation.formatted_reservation_date))]),
+            _c("h5", [_vm._v(_vm._s(reservation.user_complete_name))]),
             _vm._v(" "),
             _c("small", [
               _vm._v("\n        Cantidad de personas: "),
@@ -48562,6 +48567,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
 
 
 
@@ -48582,6 +48588,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         reserved_seats: []
       }
     };
+  },
+
+  watch: {
+    '$route.params.id': function $routeParamsId(newId) {
+      this.isEditing = true;
+      this.fetchReservation(newId);
+    }
   },
   created: function created() {
     this.drawSeats();
@@ -48621,7 +48634,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }).then(function (response) {
           var response = response.data;
-          if (response.conflicts) {
+          if (response.error) {
             alert(response.message);
             var message = response.message;
             return;
@@ -48638,9 +48651,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           }
         }).then(function (response) {
           var response = response.data;
-          if (response.conflicts) {
+          if (response.error) {
             alert(response.message);
             var message = response.message;
+            if (response.reservation_id) {
+              if (confirm('¿Desea abrir la reservación encontrada?')) {
+                _this2.$router.push('reservation/' + response.reservation_id);
+              } else {
+                alert('Debe cambiar de usuario o de fecha.');
+              }
+            }
             return;
           }
           alert('La reserva se ha creado exitosamente');
@@ -50300,6 +50320,7 @@ var render = function() {
               _vm._v(" "),
               _c("datepicker", {
                 attrs: {
+                  disabled: _vm.isEditing == true,
                   value: _vm.reservation.reservation_date,
                   "input-class": "form-control"
                 },

@@ -25,7 +25,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::orderBy('reservation_date', 'desc')->paginate(6);
+        $reservations = Reservation::orderBy('reservation_date', 'asc')->paginate(6);
         return ReservationResource::collection($reservations);
     }
 
@@ -48,12 +48,28 @@ class ReservationController extends Controller
         $reservation->people_number = $request->input('people_number');
         $reserved_seats = $request->input('reserved_seats');
         $user = User::findOrFail($reservation->user_id);
+
+        if ($request->isMethod('post')) {
+            // check if exist the reservation
+            $existing_reservations = DB::table('reservations')
+            ->where('reservations.user_id', '=', $reservation->user_id)
+            ->whereDate('reservations.reservation_date', '=', $reservation->reservation_date)
+            ->get();
+
+            if (count($existing_reservations)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Se ha encontrado una reservación para este usuario y esta fecha.',
+                    'reservation_id' => $existing_reservations[0]->id
+                ]);
+            }
+        }
                 
         // check for conflicts
         $conflicted_seats = $this->conflicted_seats($reserved_seats, $reservation);
         if (!empty($conflicted_seats)) {
             return response()->json([
-                'conflicts' => true,
+                'error' => true,
                 'message' => $this->conflicted_seats_message($conflicted_seats)
             ]);
         }

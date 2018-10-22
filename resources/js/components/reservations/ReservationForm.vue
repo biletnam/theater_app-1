@@ -24,6 +24,7 @@
             Fecha de reservación
           </label>
           <datepicker 
+            :disabled="isEditing == true"
             @selected="onDatepickerChange"
             :value="reservation.reservation_date"
             v-model="reservation.reservation_date"
@@ -92,6 +93,12 @@
         }
       }
     },
+    watch: {
+      '$route.params.id'(newId) {
+        this.isEditing = true;
+        this.fetchReservation(newId);
+      }
+    },
     created () {
       this.drawSeats();
       this.fetchAllUsers();
@@ -125,7 +132,7 @@
             }
           }).then((response) => {
             var response = response.data;
-            if (response.conflicts) {
+            if (response.error) {
               alert(response.message);
               var message = response.message;
               return;
@@ -142,9 +149,16 @@
             }
           }).then((response) => {
             var response = response.data;
-            if (response.conflicts) {
+            if (response.error) {
               alert(response.message);
               var message = response.message;
+              if (response.reservation_id) {
+                if (confirm('¿Desea abrir la reservación encontrada?')) {
+                  this.$router.push('reservation/' + response.reservation_id);
+                } else {
+                  alert('Debe cambiar de usuario o de fecha.');
+                }
+              }
               return;
             } 
             alert('La reserva se ha creado exitosamente');
