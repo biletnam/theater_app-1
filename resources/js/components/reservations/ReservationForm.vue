@@ -13,7 +13,9 @@
           </label>
           <select v-model="reservation.user_id"
             class="form-control">
-            <option disabled value="">Selecciona un usuario</option>
+            <option disabled value="">
+              {{ usersEmptyMessage }}
+            </option>
             <option v-for="user in users"
               :key="user.id"
               :value="user.id">{{ user.lastname + ', ' + user.name }}</option>
@@ -25,7 +27,6 @@
           </label>
           <datepicker 
             :disabled="isEditing == true"
-            @selected="onDatepickerChange"
             :value="reservation.reservation_date"
             v-model="reservation.reservation_date"
             input-class="form-control"></datepicker> 
@@ -84,6 +85,7 @@
         isEditing: false,
         users: [],
         seats: [],
+        usersEmptyMessage: 'Cargando usuarios...',
         reservation: {
           id: null,
           reservation_date: new Date(),
@@ -109,17 +111,12 @@
       }
     },
     methods: {
-      onDatepickerChange (selectedDate) {
-        console.log('selectedDate', selectedDate);
-        console.log('typeof selectedDate', typeof(selectedDate));
-      },
       fetchReservation(reservationId) {
         axios.get('reservation/' + reservationId, {
           id: reservationId
         }).then((response) => {
           let reservation = response.data.data;
           this.reservation = reservation;
-          console.log('response after reservation/' + reservationId, reservation);
         }).catch((error) => {
           alert('Ha ocurrido un inconveniente en el servidor.');
         });
@@ -176,8 +173,8 @@
       fetchAllUsers () {
         axios.get('all-users')
           .then(response => {
-            console.log('response', response);
             this.users = response.data.data;
+            this.usersEmptyMessage = 'Selecciona un usuario...';
           })
           .catch(error => {
             alert('Ha ocurrido un inconveniente en el servidor.');
@@ -205,9 +202,6 @@
         return false;
       },
       takeSeat(row, column) {
-        console.log('column', column);
-        console.log('row', row);
-
         if (!this.isReserved(row, column)) {
           // add reserved seat
           this.reservation.reserved_seats.push({

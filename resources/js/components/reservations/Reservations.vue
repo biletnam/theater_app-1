@@ -37,7 +37,6 @@
         pageUrl = pageUrl || 'reservations'
         axios.get(pageUrl)
         .then(response => {
-          // console.log('response', response);
           let meta = response.data.meta;
           let links = response.data.links;
           this.reservations = response.data.data;
@@ -53,7 +52,6 @@
         })
       },
       goEdition (reservation) {
-        console.log('reservation', reservation)
         this.$router.push({
           path: 'reservation/' + reservation.id
         });

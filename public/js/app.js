@@ -48049,7 +48049,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       pageUrl = pageUrl || 'reservations';
       axios.get(pageUrl).then(function (response) {
-        // console.log('response', response);
         var meta = response.data.meta;
         var links = response.data.links;
         _this.reservations = response.data.data;
@@ -48064,7 +48063,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     goEdition: function goEdition(reservation) {
-      console.log('reservation', reservation);
       this.$router.push({
         path: 'reservation/' + reservation.id
       });
@@ -48497,8 +48495,7 @@ exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  width: 100%;\n}\n.se
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker__ = __webpack_require__(62);
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+//
 //
 //
 //
@@ -48585,6 +48582,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       isEditing: false,
       users: [],
       seats: [],
+      usersEmptyMessage: 'Cargando usuarios...',
       reservation: {
         id: null,
         reservation_date: new Date(),
@@ -48612,10 +48610,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   },
 
   methods: {
-    onDatepickerChange: function onDatepickerChange(selectedDate) {
-      console.log('selectedDate', selectedDate);
-      console.log('typeof selectedDate', typeof selectedDate === 'undefined' ? 'undefined' : _typeof(selectedDate));
-    },
     fetchReservation: function fetchReservation(reservationId) {
       var _this = this;
 
@@ -48624,7 +48618,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }).then(function (response) {
         var reservation = response.data.data;
         _this.reservation = reservation;
-        console.log('response after reservation/' + reservationId, reservation);
       }).catch(function (error) {
         alert('Ha ocurrido un inconveniente en el servidor.');
       });
@@ -48682,8 +48675,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var _this3 = this;
 
       axios.get('all-users').then(function (response) {
-        console.log('response', response);
         _this3.users = response.data.data;
+        _this3.usersEmptyMessage = 'Selecciona un usuario...';
       }).catch(function (error) {
         alert('Ha ocurrido un inconveniente en el servidor.');
       });
@@ -48732,9 +48725,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       return false;
     },
     takeSeat: function takeSeat(row, column) {
-      console.log('column', column);
-      console.log('row', row);
-
       if (!this.isReserved(row, column)) {
         // add reserved seat
         this.reservation.reserved_seats.push({
@@ -50300,7 +50290,11 @@ var render = function() {
               },
               [
                 _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Selecciona un usuario")
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.usersEmptyMessage) +
+                      "\n          "
+                  )
                 ]),
                 _vm._v(" "),
                 _vm._l(_vm.users, function(user) {
@@ -50329,7 +50323,6 @@ var render = function() {
                   value: _vm.reservation.reservation_date,
                   "input-class": "form-control"
                 },
-                on: { selected: _vm.onDatepickerChange },
                 model: {
                   value: _vm.reservation.reservation_date,
                   callback: function($$v) {
@@ -50564,7 +50557,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       pageUrl = pageUrl || 'users';
       axios.get(pageUrl).then(function (response) {
-        // console.log('response', response);
         var meta = response.data.meta;
         var links = response.data.links;
         _this.users = response.data.data;
@@ -50599,7 +50591,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (confirm('¿Está seguro que desea eliminar al usuario?')) {
         axios.delete('user/' + id).then(function (response) {
           var response = response.data;
-          console.log('response', response);
           if (response.error) {
             alert(response.message);
             return;

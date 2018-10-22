@@ -57,6 +57,14 @@ class ReservationController extends Controller
             ]);
         }
 
+        // validate reservation date
+        if ($reservation->reservation_date < Carbon::now()->startOfDay()) {
+            return response()->json([
+                'error' => true,
+                'message' => 'La fecha de reservación no puede ser menor a la fecha actual.'
+            ]);
+        }
+
         // validate seats
         if (!count($reserved_seats)) {
             return response()->json([
@@ -64,7 +72,7 @@ class ReservationController extends Controller
                 'message' => 'Debe seleccionar por lo menos una butaca.'
             ]);
         }
-        
+
         if ($request->isMethod('post')) {
             // validate reservation date for the same user
             $existing_reservations = DB::table('reservations')
@@ -80,6 +88,7 @@ class ReservationController extends Controller
                 ]);
             }
         }
+
         // check for conflicts
         $conflicted_seats = $this->conflicted_seats($reserved_seats, $reservation);
         if (!empty($conflicted_seats)) {
@@ -95,6 +104,7 @@ class ReservationController extends Controller
             if ($request->isMethod('put')) {
                 ReservedSeat::where('reservation_id', $reservation->id)->delete();
             }
+
             // reserve again
             $reserved_seat = null;
             foreach($reserved_seats as $seat) {
@@ -103,6 +113,7 @@ class ReservationController extends Controller
                 $reserved_seat->column = $seat['column'];
                 $reservation->reserved_seats()->save($reserved_seat);
             }
+            
             // log reservation
             $log_action = $request->isMethod('post') ? 'creado' : 'modificado';
             $this->logger()->info('El usuario ' . 

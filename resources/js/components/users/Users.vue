@@ -66,7 +66,6 @@
         pageUrl = pageUrl || 'users'
         axios.get(pageUrl)
           .then(response => {
-            // console.log('response', response);
             let meta = response.data.meta;
             let links = response.data.links;
             this.users = response.data.data;
@@ -101,7 +100,6 @@
           axios.delete('user/' + id)
             .then(response => {
               var response = response.data;
-              console.log('response', response);
               if (response.error) {
                 alert(response.message);
                 return;
