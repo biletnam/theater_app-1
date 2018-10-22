@@ -1,5 +1,9 @@
 <template>
   <form @submit.prevent="saveUser">
+    <h5 class="text-center">
+      <span v-if="isEditing">Edición de</span> 
+      <span v-else>Nuevo</span> usuario
+    </h5>
     <div class="form-group">
       <label for="name">Nombre(s)</label>
       <input type="text" 

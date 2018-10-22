@@ -5,7 +5,7 @@
     </h3>
 
     <div v-if="!visibleForm"
-      class="mb-3">
+      class="mb-4 text-center">
       <button type="button"
         class="btn btn-success"
         @click="showForm">

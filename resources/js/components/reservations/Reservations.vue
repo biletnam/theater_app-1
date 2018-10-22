@@ -4,7 +4,7 @@
       Sistema de Reservas
     </h3>
 
-    <div class="mb-3">
+    <div class="mb-4 text-center">
       <router-link :to="{ name: 'new_reservation' }"
         class="btn btn-success">
         Nueva reserva

@@ -48100,7 +48100,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "mb-3" },
+        { staticClass: "mb-4 text-center" },
         [
           _c(
             "router-link",
@@ -48286,6 +48286,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -48316,124 +48320,125 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "reservation-list" },
-    [
+  return _c("div", { staticClass: "reservation-list" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
       _vm._l(_vm.reservations, function(reservation) {
-        return _c("div", { key: reservation.id, staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("h4", [
-              _vm._v(
-                "Reservación para el " +
-                  _vm._s(reservation.formatted_reservation_date)
-              )
+        return _c("div", { key: reservation.id, staticClass: "col-4" }, [
+          _c("div", { staticClass: "card mb-3" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _c("h4", [
+                _vm._v(
+                  "Reservación para el " +
+                    _vm._s(reservation.formatted_reservation_date)
+                )
+              ]),
+              _vm._v(" "),
+              _c("h5", [_vm._v(_vm._s(reservation.user_complete_name))]),
+              _vm._v(" "),
+              _c("small", [
+                _vm._v("\n            Cantidad de personas: "),
+                _c("b", [_vm._v(_vm._s(reservation.people_number))])
+              ])
             ]),
             _vm._v(" "),
-            _c("h5", [_vm._v(_vm._s(reservation.user_complete_name))]),
-            _vm._v(" "),
-            _c("small", [
-              _vm._v("\n        Cantidad de personas: "),
-              _c("b", [_vm._v(_vm._s(reservation.people_number))])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-footer text-right" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-danger",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    _vm.removeReservation(reservation.id)
+            _c("div", { staticClass: "card-footer text-right" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      _vm.removeReservation(reservation.id)
+                    }
                   }
-                }
+                },
+                [_vm._v("\n            Borrar\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-info",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      _vm.editReservation(reservation)
+                    }
+                  }
+                },
+                [_vm._v("\n            Editar\n          ")]
+              )
+            ])
+          ])
+        ])
+      })
+    ),
+    _vm._v(" "),
+    _vm.pagination
+      ? _c("nav", { staticClass: "mt-3" }, [
+          _c("ul", { staticClass: "pagination justify-center" }, [
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.prev_page_url }]
               },
-              [_vm._v("\n        Borrar\n      ")]
+              [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    on: {
+                      click: function($event) {
+                        _vm.prevPage(_vm.pagination.prev_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("\n          Anterior\n        ")]
+                )
+              ]
             ),
             _vm._v(" "),
+            _c("li", { staticClass: "page-item" }, [
+              _c("span", { staticClass: "page-link text-dark disabled" }, [
+                _vm._v(
+                  "\n          Página " +
+                    _vm._s(_vm.pagination.current_page) +
+                    " de " +
+                    _vm._s(_vm.pagination.last_page) +
+                    "\n        "
+                )
+              ])
+            ]),
+            _vm._v(" "),
             _c(
-              "a",
+              "li",
               {
-                staticClass: "btn btn-info",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    _vm.editReservation(reservation)
-                  }
-                }
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.next_page_url }]
               },
-              [_vm._v("\n        Editar\n      ")]
+              [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    on: {
+                      click: function($event) {
+                        _vm.nextPage(_vm.pagination.next_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("\n          Siguiente\n        ")]
+                )
+              ]
             )
           ])
         ])
-      }),
-      _vm._v(" "),
-      _vm.pagination
-        ? _c("nav", { staticClass: "mt-3" }, [
-            _c("ul", { staticClass: "pagination justify-center" }, [
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.prev_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      on: {
-                        click: function($event) {
-                          _vm.prevPage(_vm.pagination.prev_page_url)
-                        }
-                      }
-                    },
-                    [_vm._v("\n          Anterior\n        ")]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item" }, [
-                _c("span", { staticClass: "page-link text-dark disabled" }, [
-                  _vm._v(
-                    "\n          Página " +
-                      _vm._s(_vm.pagination.current_page) +
-                      " de " +
-                      _vm._s(_vm.pagination.last_page) +
-                      "\n        "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  staticClass: "page-item",
-                  class: [{ disabled: !_vm.pagination.next_page_url }]
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "page-link",
-                      on: {
-                        click: function($event) {
-                          _vm.nextPage(_vm.pagination.next_page_url)
-                        }
-                      }
-                    },
-                    [_vm._v("\n          Siguiente\n        ")]
-                  )
-                ]
-              )
-            ])
-          ])
-        : _vm._e()
-    ],
-    2
-  )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50624,7 +50629,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       !_vm.visibleForm
-        ? _c("div", { staticClass: "mb-3" }, [
+        ? _c("div", { staticClass: "mb-4 text-center" }, [
             _c(
               "button",
               {
@@ -50769,6 +50774,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -50799,112 +50808,113 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "user-list" },
-    [
+  return _c("div", { staticClass: "user-list" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
       _vm._l(_vm.users, function(user) {
-        return _c("div", { key: user.id, staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("label", [
-              _vm._v(_vm._s(user.lastname) + " , " + _vm._s(user.name))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-footer text-right" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-danger",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    _vm.removeUser(user.id)
-                  }
-                }
-              },
-              [_vm._v("\n        Borrar\n      ")]
-            ),
+        return _c("div", { key: user.id, staticClass: "col-4" }, [
+          _c("div", { staticClass: "card mb-3" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _c("label", [
+                _vm._v(_vm._s(user.lastname) + " , " + _vm._s(user.name))
+              ])
+            ]),
             _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-info",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    _vm.editUser(user)
+            _c("div", { staticClass: "card-footer text-right" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      _vm.removeUser(user.id)
+                    }
                   }
-                }
-              },
-              [_vm._v("\n        Editar\n      ")]
-            )
+                },
+                [_vm._v("\n            Borrar\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-info",
+                  attrs: { href: "javascript:void(0)" },
+                  on: {
+                    click: function($event) {
+                      _vm.editUser(user)
+                    }
+                  }
+                },
+                [_vm._v("\n            Editar\n          ")]
+              )
+            ])
           ])
         ])
-      }),
-      _vm._v(" "),
-      _c("nav", { staticClass: "mt-3" }, [
-        _c("ul", { staticClass: "pagination justify-center" }, [
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.prev_page_url }]
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  on: {
-                    click: function($event) {
-                      _vm.prevPage(_vm.pagination.prev_page_url)
-                    }
+      })
+    ),
+    _vm._v(" "),
+    _c("nav", { staticClass: "mt-3" }, [
+      _c("ul", { staticClass: "pagination justify-center" }, [
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.prev_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                on: {
+                  click: function($event) {
+                    _vm.prevPage(_vm.pagination.prev_page_url)
                   }
-                },
-                [_vm._v("\n          Anterior\n        ")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _c("span", { staticClass: "page-link text-dark disabled" }, [
-              _vm._v(
-                "\n          Página " +
-                  _vm._s(_vm.pagination.current_page) +
-                  " de " +
-                  _vm._s(_vm.pagination.last_page) +
-                  "\n        "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.next_page_url }]
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  on: {
-                    click: function($event) {
-                      _vm.nextPage(_vm.pagination.next_page_url)
-                    }
+                }
+              },
+              [_vm._v("\n          Anterior\n        ")]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item" }, [
+          _c("span", { staticClass: "page-link text-dark disabled" }, [
+            _vm._v(
+              "\n          Página " +
+                _vm._s(_vm.pagination.current_page) +
+                " de " +
+                _vm._s(_vm.pagination.last_page) +
+                "\n        "
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.next_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                on: {
+                  click: function($event) {
+                    _vm.nextPage(_vm.pagination.next_page_url)
                   }
-                },
-                [_vm._v("\n          Siguiente\n        ")]
-              )
-            ]
-          )
-        ])
+                }
+              },
+              [_vm._v("\n          Siguiente\n        ")]
+            )
+          ]
+        )
       ])
-    ],
-    2
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50969,6 +50979,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -51067,6 +51081,13 @@ var render = function() {
       }
     },
     [
+      _c("h5", { staticClass: "text-center" }, [
+        _vm.isEditing
+          ? _c("span", [_vm._v("Edición de")])
+          : _c("span", [_vm._v("Nuevo")]),
+        _vm._v(" usuario\n  ")
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre(s)")]),
         _vm._v(" "),

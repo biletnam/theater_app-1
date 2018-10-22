@@ -1,26 +1,30 @@
 <template>
   <div class="reservation-list">
-    <div v-for="reservation in reservations"
-      :key="reservation.id"
-      class="card mb-3">
-      <div class="card-body">
-        <h4>Reservación para el {{ reservation.formatted_reservation_date }}</h4>
-        <h5>{{ reservation.user_complete_name }}</h5>
-        <small>
-          Cantidad de personas: <b>{{ reservation.people_number  }}</b>
-        </small>
-      </div>
-      <div class="card-footer text-right">
-        <a href="javascript:void(0)"
-          @click="removeReservation(reservation.id)" 
-          class="btn btn-danger">
-          Borrar
-        </a>
-        <a href="javascript:void(0)"
-          @click="editReservation(reservation)" 
-          class="btn btn-info">
-          Editar
-        </a>
+    <div class="row">
+      <div v-for="reservation in reservations"
+        :key="reservation.id"
+        class="col-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h4>Reservación para el {{ reservation.formatted_reservation_date }}</h4>
+            <h5>{{ reservation.user_complete_name }}</h5>
+            <small>
+              Cantidad de personas: <b>{{ reservation.people_number  }}</b>
+            </small>
+          </div>
+          <div class="card-footer text-right">
+            <a href="javascript:void(0)"
+              @click="removeReservation(reservation.id)" 
+              class="btn btn-danger">
+              Borrar
+            </a>
+            <a href="javascript:void(0)"
+              @click="editReservation(reservation)" 
+              class="btn btn-info">
+              Editar
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <!-- paginator -->

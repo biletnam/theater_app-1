@@ -47,10 +47,26 @@ class ReservationController extends Controller
         $reservation->user_id = $request->input('user_id');
         $reservation->people_number = $request->input('people_number');
         $reserved_seats = $request->input('reserved_seats');
-        $user = User::findOrFail($reservation->user_id);
+        $user = User::find($reservation->user_id);
 
+        // validate user
+        if (!$user) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Debe seleccionar un usuario.'
+            ]);
+        }
+
+        // validate seats
+        if (!count($reserved_seats)) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Debe seleccionar por lo menos una butaca.'
+            ]);
+        }
+        
         if ($request->isMethod('post')) {
-            // check if exist the reservation
+            // validate reservation date for the same user
             $existing_reservations = DB::table('reservations')
             ->where('reservations.user_id', '=', $reservation->user_id)
             ->whereDate('reservations.reservation_date', '=', $reservation->reservation_date)
@@ -64,7 +80,6 @@ class ReservationController extends Controller
                 ]);
             }
         }
-                
         // check for conflicts
         $conflicted_seats = $this->conflicted_seats($reserved_seats, $reservation);
         if (!empty($conflicted_seats)) {

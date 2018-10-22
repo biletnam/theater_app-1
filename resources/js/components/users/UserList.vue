@@ -1,22 +1,26 @@
 <template>
   <div class="user-list">
-    <div v-for="user in users"
-      :key="user.id"
-      class="card mb-3">
-      <div class="card-body">
-        <label>{{ user.lastname }} , {{ user.name }}</label>
-      </div>
-      <div class="card-footer text-right">
-        <a href="javascript:void(0)"
-          @click="removeUser(user.id)" 
-          class="btn btn-danger">
-          Borrar
-        </a>
-        <a href="javascript:void(0)"
-          @click="editUser(user)" 
-          class="btn btn-info">
-          Editar
-        </a>
+    <div class="row">
+      <div v-for="user in users"
+        :key="user.id" 
+        class="col-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <label>{{ user.lastname }} , {{ user.name }}</label>
+          </div>
+          <div class="card-footer text-right">
+            <a href="javascript:void(0)"
+              @click="removeUser(user.id)" 
+              class="btn btn-danger">
+              Borrar
+            </a>
+            <a href="javascript:void(0)"
+              @click="editUser(user)" 
+              class="btn btn-info">
+              Editar
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <!-- paginator -->
