@@ -56,7 +56,7 @@
               this.$emit('saved', 'El usuario se ha creado exitosamente')
             })
             .catch(error => {
-              console.error('error', error)
+              alert('Ha ocurrido un inconveniente en el servidor.');
             })
         } else {
            // save existing user

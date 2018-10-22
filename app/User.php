@@ -26,7 +26,7 @@ class User extends Authenticatable
      */
     protected $hidden = [];
 
-    public function reservation () {
-        $this->hasOne('App\Reservation');
+    public function reservations () {
+        $this->hasMany('App\Reservation');
     }
 }

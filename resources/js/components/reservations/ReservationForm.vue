@@ -121,7 +121,7 @@
           this.reservation = reservation;
           console.log('response after reservation/' + reservationId, reservation);
         }).catch((error) => {
-          console.error('error', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       },
       saveReservation() {
@@ -140,7 +140,7 @@
             alert('La reserva se ha modificado exitosamente');
             this.$router.push('/');
           }).catch((error) => {
-            console.error('response', error);
+            alert('Ha ocurrido un inconveniente en el servidor.');
           });
         } else {
           axios.post('reservation', JSON.stringify(this.reservation), {
@@ -164,7 +164,7 @@
             alert('La reserva se ha creado exitosamente');
             this.$router.push('/');
           }).catch((error) => {
-            console.error('response', error);
+            alert('Ha ocurrido un inconveniente en el servidor.');
           });
         }
       },
@@ -180,7 +180,7 @@
             this.users = response.data.data;
           })
           .catch(error => {
-            console.error('error', error)
+            alert('Ha ocurrido un inconveniente en el servidor.');
           })
       },
       drawSeats() {

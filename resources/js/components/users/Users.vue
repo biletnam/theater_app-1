@@ -78,7 +78,7 @@
             };
           })
           .catch(error => {
-            console.error('error', error)
+            alert('Ha ocurrido un inconveniente en el servidor.');
           })
       },
       onSavedUser (message) {
@@ -100,10 +100,16 @@
         if (confirm('¿Está seguro que desea eliminar al usuario?')) {
           axios.delete('user/' + id)
             .then(response => {
+              var response = response.data;
+              console.log('response', response);
+              if (response.error) {
+                alert(response.message);
+                return;
+              }
               this.fetchUsers();
             })
             .catch(error => {
-              console.error('error', error)
+              alert('Ha ocurrido un inconveniente en el servidor.');
             })
         }
       }

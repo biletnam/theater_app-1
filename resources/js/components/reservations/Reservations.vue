@@ -49,7 +49,7 @@
           }
         })
         .catch(error => {
-          console.error('error', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         })
       },
       goEdition (reservation) {
@@ -65,7 +65,7 @@
               this.fetchReservations();
             })
             .catch(error => {
-              console.error('error', error)
+              alert('Ha ocurrido un inconveniente en el servidor.');
             })
         }
       }

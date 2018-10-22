@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
+use App\Reservation;
 use App\Http\Resources\User as UserResource;
 
 class UserController extends Controller
@@ -64,6 +65,14 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $user_reservations = Reservation::where('user_id', '=', $user->id)->get();
+
+        if (count($user_reservations) > 0) {
+            return response()->json([
+                'error' => true,
+                'message' => 'El usuario tiene una más reservaciones.',
+            ]);
+        }
 
         if ($user->delete()) {
             return new UserResource($user);

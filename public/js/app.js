@@ -48060,7 +48060,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           prev_page_url: links.prev
         };
       }).catch(function (error) {
-        console.error('error', error);
+        alert('Ha ocurrido un inconveniente en el servidor.');
       });
     },
     goEdition: function goEdition(reservation) {
@@ -48076,7 +48076,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         axios.delete('reservation/' + id).then(function (response) {
           _this2.fetchReservations();
         }).catch(function (error) {
-          console.error('error', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       }
     }
@@ -48621,7 +48621,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         _this.reservation = reservation;
         console.log('response after reservation/' + reservationId, reservation);
       }).catch(function (error) {
-        console.error('error', error);
+        alert('Ha ocurrido un inconveniente en el servidor.');
       });
     },
     saveReservation: function saveReservation() {
@@ -48642,7 +48642,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           alert('La reserva se ha modificado exitosamente');
           _this2.$router.push('/');
         }).catch(function (error) {
-          console.error('response', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       } else {
         axios.post('reservation', JSON.stringify(this.reservation), {
@@ -48666,7 +48666,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           alert('La reserva se ha creado exitosamente');
           _this2.$router.push('/');
         }).catch(function (error) {
-          console.error('response', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       }
     },
@@ -48680,7 +48680,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         console.log('response', response);
         _this3.users = response.data.data;
       }).catch(function (error) {
-        console.error('error', error);
+        alert('Ha ocurrido un inconveniente en el servidor.');
       });
     },
     drawSeats: function drawSeats() {
@@ -50570,7 +50570,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           prev_page_url: links.prev
         };
       }).catch(function (error) {
-        console.error('error', error);
+        alert('Ha ocurrido un inconveniente en el servidor.');
       });
     },
     onSavedUser: function onSavedUser(message) {
@@ -50593,9 +50593,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       if (confirm('¿Está seguro que desea eliminar al usuario?')) {
         axios.delete('user/' + id).then(function (response) {
+          var response = response.data;
+          console.log('response', response);
+          if (response.error) {
+            alert(response.message);
+            return;
+          }
           _this2.fetchUsers();
         }).catch(function (error) {
-          console.error('error', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       }
     }
@@ -51026,7 +51032,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }).then(function (response) {
           _this2.$emit('saved', 'El usuario se ha creado exitosamente');
         }).catch(function (error) {
-          console.error('error', error);
+          alert('Ha ocurrido un inconveniente en el servidor.');
         });
       } else {
         // save existing user

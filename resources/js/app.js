@@ -26,7 +26,6 @@ Vue.component('users', require('./components/users/Users.vue'));
 Vue.component('user-list', require('./components/users/UserList.vue'));
 Vue.component('user-form', require('./components/users/UserForm.vue'));
 
-
 import router from './routes'
 
 const app = new Vue({
