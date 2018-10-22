@@ -1,7 +1,8 @@
 <template>
   <form @submit.prevent="saveReservation">
     <h3 class="p-3 text-center">
-      Nueva reserva
+      <span v-if="isEditing">Edición de reserva</span>
+      <span v-else>Nueva reserva</span>
     </h3>
 
     <div class="form-group mb-3">
@@ -22,7 +23,10 @@
           <label>
             Fecha de reservación
           </label>
-          <datepicker :value="reservation.reservation_date"
+          <datepicker 
+            @selected="onDatepickerChange"
+            :value="reservation.reservation_date"
+            v-model="reservation.reservation_date"
             input-class="form-control"></datepicker> 
         </div>
         <div class="col-3 my-3">
@@ -53,17 +57,10 @@
     </div>
 
     <div class="text-right p-1 clearfix">
-      <div class="float-left">
-        <button type="button" @click="goBack"
-          class="btn btn-info pull-left">
-          Listado de reservas
-        </button>
-      </div>
-
       <div class="float-right">
         <button type="button"
           class="btn btn-secondary pull-right"
-          @click="cancelReservation">
+          @click="goBack">
           Cancelar
         </button>
         <button type="submit" class="btn btn-primary">
@@ -83,6 +80,7 @@
     },
     data () {
       return {
+        isEditing: false,
         users: [],
         seats: [],
         reservation: {
@@ -97,23 +95,58 @@
     created () {
       this.drawSeats();
       this.fetchAllUsers();
+      let reservationId = this.$route.params.id; 
+      if (reservationId) {
+        this.isEditing = true;
+        this.fetchReservation(reservationId)
+      }
     },
     methods: {
+      onDatepickerChange (selectedDate) {
+        console.log('selectedDate', selectedDate);
+        console.log('typeof selectedDate', typeof(selectedDate));
+      },
+      fetchReservation(reservationId) {
+        axios.get('reservation/' + reservationId, {
+          id: reservationId
+        }).then((response) => {
+          let reservation = response.data.data;
+          this.reservation = reservation;
+          console.log('response after reservation/' + reservationId, reservation);
+        }).catch((error) => {
+          console.error('error', error);
+        });
+      },
       saveReservation() {
-        // alert();
-        // console.log('JSON.stringify(this.reservation)', JSON.stringify(this.reservation));
-        // return;
-        axios.post('reservation', JSON.stringify(this.reservation), {
+        if (this.isEditing) {
+          axios.put('reservation', JSON.stringify(this.reservation), {
             headers: {
               'Content-Type': 'application/json'
             }
-          })
-          .then((response) => {
-            console.log('response', response);
-          })
-          .catch((error) => {
+          }).then((response) => {
+            var response = response.data;
+            if (response.conflicts) {
+              alert(response.message);
+              var message = response.message;
+              return;
+            } 
+            alert('La reserva se ha modificado exitosamente');
+            this.$router.push('/');
+          }).catch((error) => {
             console.error('response', error);
           });
+        } else {
+          axios.post('reFservation', JSON.stringify(this.reservation), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then((response) => {
+            alert('La reserva se ha creado exitosamente');
+            this.$router.push('/');
+          }).catch((error) => {
+            console.error('response', error);
+          });
+        }
       },
       goBack () {
         window.history.length > 1
@@ -170,17 +203,6 @@
           this.reservation.reserved_seats.splice(position, 1);
           this.reservation.people_number --;
         }
-      },
-      cancelReservation () {
-        if (this.reservation.reserved_seats.length < 1) {
-          alert('No se han seleccionado butacas');
-          return;
-        }
-        if (!confirm('¿Está seguro que desea cancelar la reserva?')) {
-          return;
-        }
-        this.reservation.reservation_date = new Date();
-        this.reservation.reserved_seats = [];
       }
     }
   }
@@ -209,9 +231,14 @@
     padding: 12px 6px;
     margin: 3px;
   }
-  .seat-list .seat-item .seat:hover,
-  .seat-list .seat-item .seat.reserved { 
+  .seat-list .seat-item .seat:hover {
     border-color: orange !important;
     cursor: pointer;
+  }
+
+  .seat-list .seat-item .seat.reserved { 
+    background-color: orange;
+    border-color: orange;
+    color: #fff;
   }
 </style>

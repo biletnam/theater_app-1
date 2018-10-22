@@ -11,6 +11,6 @@ class ReservedSeat extends Model
     ];
 
     public function reservation () {
-        return $this->belongsTo('App\Reservation')->withDefault();
+        return $this->belongsTo('App\Reservation');
     }
 }

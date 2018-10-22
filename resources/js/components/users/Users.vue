@@ -87,6 +87,7 @@
         this.user.lastname = null;
         alert(message); // @todo: change this
         this.fetchUsers();
+        this.visibleForm = !this.visibleForm
       },
       startEdition (user) {
         this.edit = true

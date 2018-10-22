@@ -25,4 +25,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [];
+
+    public function reservation () {
+        $this->hasOne('App\Reservation');
+    }
 }

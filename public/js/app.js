@@ -48029,6 +48029,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -48060,6 +48062,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         console.error('error', error);
       });
+    },
+    goEdition: function goEdition(reservation) {
+      console.log('reservation', reservation);
+      this.$router.push({
+        path: 'reservation/' + reservation.id
+      });
+    },
+    confirmRemoving: function confirmRemoving(id) {
+      var _this2 = this;
+
+      if (confirm('¿Está seguro que desea eliminar la reservación?')) {
+        axios.delete('reservation/' + id).then(function (response) {
+          _this2.fetchReservations();
+        }).catch(function (error) {
+          console.error('error', error);
+        });
+      }
     }
   }
 });
@@ -48097,7 +48116,12 @@ var render = function() {
       _vm._v(" "),
       _c("reservation-list", {
         attrs: { reservations: _vm.reservations, pagination: _vm.pagination },
-        on: { prev: _vm.fetchReservations, next: _vm.fetchReservations }
+        on: {
+          edited: _vm.goEdition,
+          removed: _vm.confirmRemoving,
+          prev: _vm.fetchReservations,
+          next: _vm.fetchReservations
+        }
       })
     ],
     1
@@ -48261,6 +48285,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -48274,8 +48299,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     nextPage: function nextPage(url) {
       this.$emit('next', url);
     },
-    editReservation: function editReservation(user) {
-      this.$emit('edited', user);
+    editReservation: function editReservation(reservation) {
+      this.$emit('edited', reservation);
     },
     removeReservation: function removeReservation(id) {
       this.$emit('removed', id);
@@ -48298,7 +48323,9 @@ var render = function() {
       _vm._l(_vm.reservations, function(reservation) {
         return _c("div", { key: reservation.id, staticClass: "card mb-3" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("h4", [_vm._v(_vm._s(reservation.reservation_date))]),
+            _c("h4", [_vm._v(_vm._s(reservation.user_complete_name))]),
+            _vm._v(" "),
+            _c("h5", [_vm._v(_vm._s(reservation.formatted_reservation_date))]),
             _vm._v(" "),
             _c("small", [
               _vm._v("\n        Cantidad de personas: "),
@@ -48448,7 +48475,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  width: 100%;\n}\n.seat-list .seat-item[data-v-2e995073] {\n  float: left;\n  width: 10%;\n  max-width: 10%;\n  padding: 1px;\n}\n.seat-list .seat-item *[data-v-2e995073] {\n  font-size: 9px;\n}\n.seat-list .seat-item .seat[data-v-2e995073] {\n  border-radius: 6px;\n  border: solid 3px #c9c9c9;\n  padding: 12px 6px;\n  margin: 3px;\n}\n.seat-list .seat-item .seat[data-v-2e995073]:hover,\n.seat-list .seat-item .seat.reserved[data-v-2e995073] { \n  border-color: orange !important;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  width: 100%;\n}\n.seat-list .seat-item[data-v-2e995073] {\n  float: left;\n  width: 10%;\n  max-width: 10%;\n  padding: 1px;\n}\n.seat-list .seat-item *[data-v-2e995073] {\n  font-size: 9px;\n}\n.seat-list .seat-item .seat[data-v-2e995073] {\n  border-radius: 6px;\n  border: solid 3px #c9c9c9;\n  padding: 12px 6px;\n  margin: 3px;\n}\n.seat-list .seat-item .seat[data-v-2e995073]:hover {\n  border-color: orange !important;\n  cursor: pointer;\n}\n.seat-list .seat-item .seat.reserved[data-v-2e995073] { \n  background-color: orange;\n  border-color: orange;\n  color: #fff;\n}\n", ""]);
 
 // exports
 
@@ -48460,9 +48487,8 @@ exports.push([module.i, "\n.seat-list[data-v-2e995073] {\n  width: 100%;\n}\n.se
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuejs_datepicker__ = __webpack_require__(62);
-//
-//
-//
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 //
 //
 //
@@ -48545,6 +48571,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   data: function data() {
     return {
+      isEditing: false,
       users: [],
       seats: [],
       reservation: {
@@ -48559,32 +48586,73 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     this.drawSeats();
     this.fetchAllUsers();
+    var reservationId = this.$route.params.id;
+    if (reservationId) {
+      this.isEditing = true;
+      this.fetchReservation(reservationId);
+    }
   },
 
   methods: {
-    saveReservation: function saveReservation() {
-      // alert();
-      // console.log('JSON.stringify(this.reservation)', JSON.stringify(this.reservation));
-      // return;
-      axios.post('reservation', JSON.stringify(this.reservation), {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    onDatepickerChange: function onDatepickerChange(selectedDate) {
+      console.log('selectedDate', selectedDate);
+      console.log('typeof selectedDate', typeof selectedDate === 'undefined' ? 'undefined' : _typeof(selectedDate));
+    },
+    fetchReservation: function fetchReservation(reservationId) {
+      var _this = this;
+
+      axios.get('reservation/' + reservationId, {
+        id: reservationId
       }).then(function (response) {
-        console.log('response', response);
+        var reservation = response.data.data;
+        _this.reservation = reservation;
+        console.log('response after reservation/' + reservationId, reservation);
       }).catch(function (error) {
-        console.error('response', error);
+        console.error('error', error);
       });
+    },
+    saveReservation: function saveReservation() {
+      var _this2 = this;
+
+      if (this.isEditing) {
+        axios.put('reservation', JSON.stringify(this.reservation), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (response) {
+          var response = response.data;
+          if (response.conflicts) {
+            alert(response.message);
+            var message = response.message;
+            return;
+          }
+          alert('La reserva se ha modificado exitosamente');
+          _this2.$router.push('/');
+        }).catch(function (error) {
+          console.error('response', error);
+        });
+      } else {
+        axios.post('reFservation', JSON.stringify(this.reservation), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (response) {
+          alert('La reserva se ha creado exitosamente');
+          _this2.$router.push('/');
+        }).catch(function (error) {
+          console.error('response', error);
+        });
+      }
     },
     goBack: function goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
     },
     fetchAllUsers: function fetchAllUsers() {
-      var _this = this;
+      var _this3 = this;
 
       axios.get('all-users').then(function (response) {
         console.log('response', response);
-        _this.users = response.data.data;
+        _this3.users = response.data.data;
       }).catch(function (error) {
         console.error('error', error);
       });
@@ -48651,17 +48719,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.reservation.reserved_seats.splice(position, 1);
         this.reservation.people_number--;
       }
-    },
-    cancelReservation: function cancelReservation() {
-      if (this.reservation.reserved_seats.length < 1) {
-        alert('No se han seleccionado butacas');
-        return;
-      }
-      if (!confirm('¿Está seguro que desea cancelar la reserva?')) {
-        return;
-      }
-      this.reservation.reservation_date = new Date();
-      this.reservation.reserved_seats = [];
     }
   }
 });
@@ -50170,7 +50227,9 @@ var render = function() {
     },
     [
       _c("h3", { staticClass: "p-3 text-center" }, [
-        _vm._v("\n    Nueva reserva\n  ")
+        _vm.isEditing
+          ? _c("span", [_vm._v("Edición de reserva")])
+          : _c("span", [_vm._v("Nueva reserva")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group mb-3" }, [
@@ -50237,6 +50296,14 @@ var render = function() {
                 attrs: {
                   value: _vm.reservation.reservation_date,
                   "input-class": "form-control"
+                },
+                on: { selected: _vm.onDatepickerChange },
+                model: {
+                  value: _vm.reservation.reservation_date,
+                  callback: function($$v) {
+                    _vm.$set(_vm.reservation, "reservation_date", $$v)
+                  },
+                  expression: "reservation.reservation_date"
                 }
               })
             ],
@@ -50309,25 +50376,13 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "text-right p-1 clearfix" }, [
-        _c("div", { staticClass: "float-left" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-info pull-left",
-              attrs: { type: "button" },
-              on: { click: _vm.goBack }
-            },
-            [_vm._v("\n        Listado de reservas\n      ")]
-          )
-        ]),
-        _vm._v(" "),
         _c("div", { staticClass: "float-right" }, [
           _c(
             "button",
             {
               staticClass: "btn btn-secondary pull-right",
               attrs: { type: "button" },
-              on: { click: _vm.cancelReservation }
+              on: { click: _vm.goBack }
             },
             [_vm._v("\n        Cancelar\n      ")]
           ),
@@ -50497,6 +50552,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.user.lastname = null;
       alert(message); // @todo: change this
       this.fetchUsers();
+      this.visibleForm = !this.visibleForm;
     },
     startEdition: function startEdition(user) {
       this.edit = true;
@@ -51102,7 +51158,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
     name: 'new_reservation',
     component: __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm___default.a
   }, {
-    path: '/reservation/{id}',
+    path: '/reservation/:id',
     name: 'reservation',
     component: __WEBPACK_IMPORTED_MODULE_3__components_reservations_ReservationForm___default.a
   }, {

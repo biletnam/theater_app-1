@@ -4,7 +4,8 @@
       :key="reservation.id"
       class="card mb-3">
       <div class="card-body">
-        <h4>{{ reservation.reservation_date }}</h4>
+        <h4>{{ reservation.user_complete_name }}</h4>
+        <h5>{{ reservation.formatted_reservation_date }}</h5>
         <small>
           Cantidad de personas: <b>{{ reservation.people_number  }}</b>
         </small>
@@ -62,8 +63,8 @@
       nextPage (url) {
         this.$emit('next', url)
       },
-      editReservation(user) {
-        this.$emit('edited', user);
+      editReservation(reservation) {
+        this.$emit('edited', reservation);
       },
       removeReservation(id) {
         this.$emit('removed', id);

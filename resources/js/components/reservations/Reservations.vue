@@ -14,6 +14,8 @@
     <reservation-list 
       :reservations="reservations"
       :pagination="pagination"
+      @edited="goEdition"
+      @removed="confirmRemoving"
       @prev="fetchReservations"
       @next="fetchReservations"></reservation-list>
   </div>
@@ -49,6 +51,23 @@
         .catch(error => {
           console.error('error', error);
         })
+      },
+      goEdition (reservation) {
+        console.log('reservation', reservation)
+        this.$router.push({
+          path: 'reservation/' + reservation.id
+        });
+      },
+      confirmRemoving (id) {
+        if (confirm('¿Está seguro que desea eliminar la reservación?')) {
+          axios.delete('reservation/' + id)
+            .then(response => {
+              this.fetchReservations();
+            })
+            .catch(error => {
+              console.error('error', error)
+            })
+        }
       }
     }
   }

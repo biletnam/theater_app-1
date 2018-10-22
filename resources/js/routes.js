@@ -20,7 +20,7 @@ export default new VueRouter({
         component: ReservationForm
       },
       {
-        path: '/reservation/{id}',
+        path: '/reservation/:id',
         name: 'reservation',
         component: ReservationForm
       },
