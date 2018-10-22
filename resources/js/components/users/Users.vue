@@ -66,7 +66,7 @@
         pageUrl = pageUrl || 'users'
         axios.get(pageUrl)
           .then(response => {
-            console.log('response', response);
+            // console.log('response', response);
             let meta = response.data.meta;
             let links = response.data.links;
             this.users = response.data.data;
